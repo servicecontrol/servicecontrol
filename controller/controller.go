@@ -1,6 +1,6 @@
 package controller
 
-import(  
+import (
 	"servicecontrol.io/servicecontrol/controller/dashboard"
 )
 

@@ -1,6 +1,6 @@
 package router
 
-import(
+import (
 	"net/http"
 	"sync"
 
@@ -8,7 +8,7 @@ import(
 )
 
 var (
-	r *vestigo.Router
+	r         *vestigo.Router
 	infoMutex sync.RWMutex
 )
 
@@ -31,7 +31,6 @@ func MehotdNotAllowed(fn vestigo.MethodNotAllowedHandlerFunc) {
 func Param(r *http.Request, name string) string {
 	return vestigo.Param(r, name)
 }
-
 
 // Instance returns the router.
 func Instance() *vestigo.Router {

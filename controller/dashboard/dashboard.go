@@ -1,10 +1,10 @@
 package dashboard
 
 import (
-"net/http"
-"servicecontrol.io/servicecontrol/lib/router"
-"servicecontrol.io/servicecontrol/lib/session"
-"servicecontrol.io/servicecontrol/lib/view"
+	"net/http"
+	"servicecontrol.io/servicecontrol/lib/router"
+	"servicecontrol.io/servicecontrol/lib/session"
+	"servicecontrol.io/servicecontrol/lib/view"
 )
 
 func Load() {
@@ -13,10 +13,10 @@ func Load() {
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	session := session.Instance(r)
-	
+
 	v := view.New("dashboard/index")
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]
 	}
-	v.Render(w,r)
+	v.Render(w, r)
 }

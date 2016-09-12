@@ -1,9 +1,9 @@
 package status
 
 import (
-"net/http"
-"servicecontrol.io/servicecontrol/lib/router"
-"servicecontrol.io/servicecontrol/lib/view"
+	"net/http"
+	"servicecontrol.io/servicecontrol/lib/router"
+	"servicecontrol.io/servicecontrol/lib/view"
 )
 
 func Load() {
@@ -20,13 +20,13 @@ func Error404(w http.ResponseWriter, r *http.Request) {
 	v.Render(w, r)
 }
 
-func Error405(allowedMethods string) fun(w http.ResponseWriter, r *http.Request) {
+func Error405(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		v := view.New("status/index")
-		v.Vars["title"]  = "405 Method Not Allowed"
+		v.Vars["title"] = "405 Method Not Allowed"
 		v.Vars["message"] = "Method is not allowed."
-		v.Render(w,r)
+		v.Render(w, r)
 	}
 }
 

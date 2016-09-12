@@ -1,11 +1,13 @@
 package server
 
-import ("fmt"
-"log"
+import (
+	"fmt"
+	"log"
 
-"net/http"
+	"net/http"
 
-"time")
+	"time"
+)
 
 // Info stores the hostname and port number.
 type Info struct {
@@ -20,7 +22,7 @@ type Info struct {
 }
 
 func Run(httpHandlers http.Handler, httpsHandlers http.Handler, info Info) {
-		// Determine if HTTP should redirect to HTTPS
+	// Determine if HTTP should redirect to HTTPS
 	if info.RedirectToHTTPS {
 		httpHandlers = http.HandlerFunc(redirectToHTTPS)
 	}
@@ -69,4 +71,3 @@ func httpAddress(info Info) string {
 func httpsAddress(info Info) string {
 	return info.Hostname + ":" + fmt.Sprintf("%d", info.HTTPSPort)
 }
-

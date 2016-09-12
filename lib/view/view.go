@@ -1,7 +1,7 @@
 package view
 
 import (
-"html/template"
+	"html/template"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -10,7 +10,6 @@ import (
 )
 
 var (
-
 	childTemplates     []string
 	rootTemplate       string
 	templateCollection = make(map[string]*template.Template)
@@ -21,17 +20,17 @@ var (
 )
 
 type Info struct {
-	BaseURI string
+	BaseURI   string
 	Extension string
-	Folder string
-	Caching bool
-	Vars map[string]interface{}
-	base string
+	Folder    string
+	Caching   bool
+	Vars      map[string]interface{}
+	base      string
 	templates []string
 }
 
 type Template struct {
-	Root string `json:"Root"`
+	Root     string   `json:"Root"`
 	Children []string `json:"Children"`
 }
 
@@ -49,16 +48,15 @@ func ResetConfig() {
 	infoMutex.Unlock()
 }
 
-func Config() Info{
+func Config() Info {
 	infoMutex.RLock()
 	defer infoMutex.RUnlock()
 	return info
 }
 
-
 func New(templateList ...string) *Info {
-	v:= &Info{}
-	v.Vars = make(map[string] interface{})
+	v := &Info{}
+	v.Vars = make(map[string]interface{})
 	v.BaseURI = Config().BaseURI
 	v.Extension = Config().Extension
 	v.Folder = Config().Folder
@@ -67,7 +65,7 @@ func New(templateList ...string) *Info {
 	return v
 }
 
-func (v *Info) Render(w http.ResponseWriter, r * http.Request) error {
+func (v *Info) Render(w http.ResponseWriter, r *http.Request) error {
 	v.templates = append([]string{v.base}, v.templates...)
 	v.templates = append(v.templates, childTemplates...)
 	baseTemplate := v.templates[0]
@@ -97,14 +95,14 @@ func (v *Info) Render(w http.ResponseWriter, r * http.Request) error {
 		mutex.Lock()
 		templateCollection[key] = templates
 		mutex.Unlock()
-	
+
 		tc = templates
 	}
 
 	sc := modify()
 
 	for _, fn := range sc {
-		fn(w,r,v)
+		fn(w, r, v)
 	}
 
 	err := tc.Funcs(pc).ExecuteTemplate(w, baseTemplate+"."+v.Extension, v.Vars)

@@ -1,19 +1,18 @@
 package session
 
 import (
-"encoding/base64"
-	"log"
-	"sync"
-"net/http"
+	"encoding/base64"
 	"github.com/gorilla/sessions"
+	"log"
+	"net/http"
+	"sync"
 )
 
 var (
-	store *sessions.CookieStore
-	Name string
+	store     *sessions.CookieStore
+	Name      string
 	infoMutex sync.RWMutex
 )
-
 
 func Instance(r *http.Request) *sessions.Session {
 	infoMutex.RLock()

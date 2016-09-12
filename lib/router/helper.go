@@ -13,7 +13,6 @@ var (
 	listMutex sync.RWMutex
 )
 
-
 // Record stores the method and path.
 func record(method, path string) {
 	listMutex.Lock()
@@ -29,7 +28,6 @@ func Get(path string, fn http.HandlerFunc, c ...alice.Constructor) {
 	r.Get(path, alice.New(c...).ThenFunc(fn).(http.HandlerFunc))
 	infoMutex.Unlock()
 }
-
 
 // ChainHandler returns a handler of chained middleware.
 func ChainHandler(h http.Handler, c ...alice.Constructor) http.Handler {

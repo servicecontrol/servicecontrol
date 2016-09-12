@@ -1,9 +1,9 @@
 package main
 
 import (
-"servicecontrol.io/servicecontrol/boot"
-"servicecontrol.io/servicecontrol/lib/router"
-"servicecontrol.io/servicecontrol/lib/server"
+	"servicecontrol.io/servicecontrol/boot"
+	"servicecontrol.io/servicecontrol/lib/router"
+	"servicecontrol.io/servicecontrol/lib/server"
 )
 
 func main() {
@@ -13,7 +13,7 @@ func main() {
 
 	handler := boot.SetUpMiddleware(router.Instance())
 
-	server.Run (
+	server.Run(
 		handler,
 		handler,
 		info.Server,
