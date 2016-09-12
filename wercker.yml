@@ -7,7 +7,7 @@ build:
     - script:
         name: go get
         code: |
-          go get
+          go get -v -insecure
 
     # Build the project
     - script:
