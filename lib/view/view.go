@@ -1,8 +1,23 @@
 package view
 
 import (
-""
+"html/template"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"sync"
+)
 
+var (
+
+	childTemplates     []string
+	rootTemplate       string
+	templateCollection = make(map[string]*template.Template)
+	mutex              sync.RWMutex
+	sessionName        string
+	info               Info
+	infoMutex          sync.RWMutex
 )
 
 type Info struct {
