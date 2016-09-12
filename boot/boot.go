@@ -10,6 +10,8 @@ import (
 "servicecontrol.io/servicecontrol/lib/router"
 "servicecontrol.io/servicecontrol/lib/view"
 "servicecontrol.io/servicecontrol/lib/session"
+"servicecontrol.io/servicecontrol/lib/server"
+
 
 "servicecontrol.io/servicecontrol/controller"
 )
@@ -21,7 +23,7 @@ type Info struct {
 //	Form       form.Info     `json:"Form"`
 //	Generation generate.Info `json:"Generation"`
 //	MySQL      mysql.Info    `json:"MySQL"`
-//	Server     server.Info   `json:"Server"`
+	Server     server.Info   `json:"Server"`
 	Session    session.Info  `json:"Session"`
 	Template   view.Template `json:"Template"`
 	View       view.Info     `json:"View"`
@@ -51,4 +53,13 @@ func RegisterServices(config *Info) {
 	controller.LoadRoutes()
 	view.SetConfig(config.View)
 	view.SetTemplates(config.Template.Root, config.Template.Children)
+}
+
+
+
+// SetUpMiddleware contains the middleware that applies to every request.
+func SetUpMiddleware(h http.Handler) http.Handler {
+	return router.ChainHandler( // Chain middleware, top middlware runs first
+		h,                    // Handler to wrap
+	)
 }

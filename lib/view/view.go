@@ -30,6 +30,25 @@ type Info struct {
 	tempplates []string
 }
 
+type Template struct {
+	Root string `json:"Root"`
+	Children []string `json:"Children"`
+}
+
+// SetConfig stores the config.
+func SetConfig(i Info) {
+	infoMutex.Lock()
+	info = i
+	infoMutex.Unlock()
+}
+
+// ResetConfig removes the config.
+func ResetConfig() {
+	infoMutex.Lock()
+	info = Info{}
+	infoMutex.Unlock()
+}
+
 func Config() {
 	infoMutex.Lock()
 	defer infoMutex.RUnlock()
