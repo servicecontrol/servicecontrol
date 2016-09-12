@@ -27,7 +27,7 @@ type Info struct {
 	Caching bool
 	Vars map[string]interface{}
 	base string
-	tempplates []string
+	templates []string
 }
 
 type Template struct {
@@ -49,8 +49,8 @@ func ResetConfig() {
 	infoMutex.Unlock()
 }
 
-func Config() {
-	infoMutex.Lock()
+func Config() Info{
+	infoMutex.RLock()
 	defer infoMutex.RUnlock()
 	return info
 }
@@ -59,7 +59,7 @@ func Config() {
 func New(templateList ...string) *Info {
 	v:= &Info{}
 	v.Vars = make(map[string] interface{})
-	v.BaseUrl = Config().BaseURI
+	v.BaseURI = Config().BaseURI
 	v.Extension = Config().Extension
 	v.Folder = Config().Folder
 	v.templates = append(v.templates, templateList...)
@@ -67,9 +67,9 @@ func New(templateList ...string) *Info {
 	return v
 }
 
-func (v *Info) Render(W http.ResponseWriter, r * http.Request) error {
+func (v *Info) Render(w http.ResponseWriter, r * http.Request) error {
 	v.templates = append([]string{v.base}, v.templates...)
-	v.templates = append(v.teamplates, childTemplates...)
+	v.templates = append(v.templates, childTemplates...)
 	baseTemplate := v.templates[0]
 	key := strings.Join(v.templates, ":")
 	mutex.RLock()
@@ -110,7 +110,7 @@ func (v *Info) Render(W http.ResponseWriter, r * http.Request) error {
 	err := tc.Funcs(pc).ExecuteTemplate(w, baseTemplate+"."+v.Extension, v.Vars)
 
 	if err != nil {
-		http.Error(w, "Template File Error: "+Error(), http.StatusInternalServerError)
+		http.Error(w, "Template File Error: "+err.Error(), http.StatusInternalServerError)
 	}
 
 	return err

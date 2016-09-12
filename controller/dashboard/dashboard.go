@@ -11,7 +11,7 @@ func Load() {
 	router.Get("/", Index)
 }
 
-func Index(w, http.ResponseWriter, r *http.Request) {
+func Index(w http.ResponseWriter, r *http.Request) {
 	session := session.Instance(r)
 	
 	v := view.New("dashboard/index")

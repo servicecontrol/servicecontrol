@@ -1,9 +1,9 @@
 package controller
 
-import {
+import(  
 	"servicecontrol.io/servicecontrol/controller/dashboard"
-}
+)
 
-func LoadRUtes() {
+func LoadRoutes() {
 	dashboard.Load()
 }

@@ -13,7 +13,7 @@ func main() {
 
 	handler := boot.SetUpMiddleware(router.Instance())
 
-	server,Run (
+	server.Run (
 		handler,
 		handler,
 		info.Server,

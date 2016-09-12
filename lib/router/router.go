@@ -23,11 +23,19 @@ func ResetConfig() {
 }
 
 func MehotdNotAllowed(fn vestigo.MethodNotAllowedHandlerFunc) {
-	infoMutex.Locl()
+	infoMutex.Lock()
 	vestigo.CustomMethodNotAllowedHandlerFunc(fn)
-	infoMutec.Unlock()
+	infoMutex.Unlock()
 }
 
 func Param(r *http.Request, name string) string {
 	return vestigo.Param(r, name)
+}
+
+
+// Instance returns the router.
+func Instance() *vestigo.Router {
+	infoMutex.RLock()
+	defer infoMutex.RUnlock()
+	return r
 }

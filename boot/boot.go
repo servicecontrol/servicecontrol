@@ -1,7 +1,6 @@
 package boot
 
 import (
-"encoding/base64"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -11,6 +10,7 @@ import (
 "servicecontrol.io/servicecontrol/lib/view"
 "servicecontrol.io/servicecontrol/lib/session"
 "servicecontrol.io/servicecontrol/lib/server"
+"servicecontrol.io/servicecontrol/lib/jsonconfig"
 
 
 "servicecontrol.io/servicecontrol/controller"
@@ -31,7 +31,7 @@ type Info struct {
 }
 
 func (c *Info) ParseJSON(b []byte) error {
-	return json.Unmarshal(, &c)
+	return json.Unmarshal(b, &c)
 }
 
 
