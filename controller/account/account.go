@@ -16,7 +16,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	session := session.Instance(r)
 
 	v := view.New("account/index")
-	v.Vars["int_name"] = "Account"
+	v.Vars["int_name"] = "account"
 	v.Vars["menu_items"] = menu.Config().MenuItems
 
         view.ExtractPageInfo(v.Vars, menu.Config())

@@ -5,6 +5,7 @@
 
 {{ $intName := .int_name }}
 {{ range  $item := .menu_items }}
+  {{ if $item.VisibleInMain }}
   {{ if eq $intName $item.InternalName }}
         <li class="menu-dropdown active">
             <a href="{{ $item.Route }}"> {{ $item.PublicName }}
@@ -17,6 +18,7 @@
                 <span class="arrow"></span>
             </a>
         </li>
+  {{ end }}
   {{ end }}
 {{ end }}
     </ul>

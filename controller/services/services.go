@@ -2,6 +2,7 @@ package services
 
 import (
 	"net/http"
+	"fmt"
 	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/session"
@@ -24,7 +25,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	v.Vars["menu_items"] = menu.Config().MenuItems
 	
 	view.ExtractPageInfo(v.Vars, menu.Config())	
-
+fmt.Println(v)
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]
 	}
