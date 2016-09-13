@@ -1,8 +1,10 @@
+{{define "content" .}}
+
 <div class="page-head">
     <div class="container">
         <!-- BEGIN PAGE TITLE -->
         <div class="page-title">
-            <h1>Blank Page </h1>
+            <h1>{{.page_title}} </h1>
         </div>
         <!-- END PAGE TITLE -->
         <!-- BEGIN PAGE TOOLBAR -->
@@ -20,11 +22,11 @@
         <!-- BEGIN PAGE BREADCRUMBS -->
         <ul class="page-breadcrumb breadcrumb">
             <li>
-                <a href="index.html">Home</a>
+                <a href="/">Home</a>
                 <i class="fa fa-circle"></i>
             </li>
             <li>
-                <span>Blank page</span>
+                <span>{{.page_title}}</span>
             </li>
         </ul>
         <!-- END PAGE BREADCRUMBS -->
@@ -37,3 +39,5 @@
         <!-- END PAGE CONTENT INNER -->
     </div>
 </div>
+
+{{end}}
