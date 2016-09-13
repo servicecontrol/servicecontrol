@@ -1,4 +1,4 @@
-package dashboard
+package logout 
 
 import (
 	"net/http"
@@ -16,7 +16,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	v := view.New("logout/index")
 	v.Vars["page_title"] = "Logout"
-	
+
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]
 	}

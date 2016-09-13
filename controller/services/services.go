@@ -1,4 +1,4 @@
-package dashboard
+package services
 
 import (
 	"net/http"
@@ -16,7 +16,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	v := view.New("services/index")
 	v.Vars["page_title"] = "Services"
-	
+
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]
 	}

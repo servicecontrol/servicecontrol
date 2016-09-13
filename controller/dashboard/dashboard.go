@@ -16,7 +16,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	v := view.New("dashboard/index")
 	v.Vars["page_title"] = "Dashboard"
-	
+
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]
 	}
