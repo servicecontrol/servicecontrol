@@ -1,0 +1,27 @@
+box: golang
+build:
+  steps:
+    - setup-go-workspace
+
+    # Gets the dependencies
+    - script:
+        name: go get
+        code: |
+          go get -v -insecure
+
+    # Build the project
+    - script:
+        name: go build
+        code: |
+          go build ./...
+
+    # Test the project
+    - script:
+        name: go test
+        code: |
+          go test ./...
+        
+    - script:
+        name: go fmt 
+        code: |
+          go fmt ./..
