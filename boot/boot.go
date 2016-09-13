@@ -52,6 +52,10 @@ func RegisterServices(config *Info) {
 	asset.SetConfig(config.Asset)
 	view.SetConfig(config.View)
 	view.SetTemplates(config.Template.Root, config.Template.Children)
+	// Set up the functions for the views
+	view.SetFuncMaps(
+		asset.Map(config.View.BaseURI),
+	)
 }
 
 // SetUpMiddleware contains the middleware that applies to every request.
