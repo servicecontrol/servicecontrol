@@ -8,14 +8,14 @@ import (
 )
 
 func Load() {
-	router.Get("/", Index)
+	router.Get("/support", Index)
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	session := session.Instance(r)
 
-	v := view.New("dashboard/index")
-	v.Vars["page_title"] = "Dashboard"
+	v := view.New("support/index")
+	v.Vars["page_title"] = "Support"
 	
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]
