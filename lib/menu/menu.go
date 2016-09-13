@@ -14,7 +14,7 @@ type MenuItem struct {
 	InternalName string `json:"internalName"`
 	PublicName   string `json:"publicName"`
 	Route        string `json:"route"`
-	VisibleInMain bool `json:"visibleInMain"`
+	IsVisibleInMain bool `json:"isVisibleInMain"`
 }
 
 func SetConfig(m Menu) {
