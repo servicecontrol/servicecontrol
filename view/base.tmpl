@@ -23,7 +23,7 @@
                                 <!-- BEGIN LOGO -->
                                 <div class="page-logo">
                                     <a href="index.html">
-                                        <img src="../assets/layouts/layout3/img/logo-default.jpg" alt="logo" class="logo-default">
+                                        <!--img src="../assets/layouts/layout3/img/logo-default.jpg" alt="logo" class="logo-default">-->
                                     </a>
                                 </div>
                                 <!-- END LOGO -->
@@ -33,28 +33,27 @@
                                 <!-- BEGIN TOP NAVIGATION MENU -->
                                 <div class="top-menu">
                                     <ul class="nav navbar-nav pull-right">
-                                        <!-- BEGIN NOTIFICATION DROPDOWN -->
-                                        {{template "notificationdropdown.tmpl"}}
+				           <!-- BEGIN NOTIFICATION DROPDOWN -->
                                         <!-- END NOTIFICATION DROPDOWN -->
                                         <!-- BEGIN TODO DROPDOWN -->
-                                        {{template "tododropdown.tmpl"}}
+                                       <!-- {{template "tododropdown.tmpl"}}-->
                                         <!-- END TODO DROPDOWN -->
-                                        <li class="droddown dropdown-separator">
+                                        <!--<li class="droddown dropdown-separator">
                                             <span class="separator"></span>
-                                        </li>
-                                        <!-- BEGIN INBOX DROPDOWN -->
-                                        {{template "inboxdropdown.tmpl"}}
+                                        </li>-->          <!-- BEGIN NOTIFICATION DROPDOWN -->
+					<!-- BEGIN INBOX DROPDOWN -->
+                                        <!--{{template "inboxdropdown.tmpl"}}-->
                                         <!-- END INBOX DROPDOWN -->
                                         <!-- BEGIN USER LOGIN DROPDOWN -->
-                                        {{template "userlogindropdown.tmpl"}}
+                                         {{template "userlogindropdown.tmpl"}}
                                         <!-- END USER LOGIN DROPDOWN -->
                                         <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                                        <li class="dropdown dropdown-extended quick-sidebar-toggler">
+                                        <!-- <li class="dropdown dropdown-extended quick-sidebar-toggler">
                                             <span class="sr-only">Toggle Quick Sidebar</span>
                                             <i class="icon-logout"></i>
-                                        </li>
-                                        <!-- END QUICK SIDEBAR TOGGLER -->
-                                    </ul>
+                                        </li>-->
+                                        <!-- END QUICK SIDEBAR TOGGLER --> 
+					</ul>
                                 </div>
                                 <!-- END TOP NAVIGATION MENU -->
                             </div>
@@ -99,7 +98,7 @@
                         </div>
                         <!-- END CONTENT -->
                         <!-- BEGIN QUICK SIDEBAR -->
-                        {{template "sidebar.tmpl"}}
+                      <!--  {{template "sidebar.tmpl"}}-->
                         <!-- END QUICK SIDEBAR -->
                     </div>
                     <!-- END CONTAINER -->
@@ -114,7 +113,7 @@
             </div>
         </div>
         <!-- BEGIN QUICK NAV -->
-        {{template "quicknav.tmpl"}}
+       <!-- {{template "quicknav.tmpl"}}-->
         <!-- END QUICK NAV -->
 
         {{template "javascripts.tmpl"}}
