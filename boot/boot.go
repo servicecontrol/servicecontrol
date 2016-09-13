@@ -49,6 +49,7 @@ func LoadConfig(configFile string) *Info {
 func RegisterServices(config *Info) {
 	session.SetConfig(config.Session)
 	controller.LoadRoutes()
+	asset.SetConfig(config.Asset)
 	view.SetConfig(config.View)
 	view.SetTemplates(config.Template.Root, config.Template.Children)
 }

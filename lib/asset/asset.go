@@ -117,5 +117,5 @@ func fileTime(name string) (string, error) {
 		return "", err
 	}
 	mtime := fi.ModTime().Unix()
-	return fmt.Sprintf
+	return fmt.Sprintf("%v", mtime), nil
 }

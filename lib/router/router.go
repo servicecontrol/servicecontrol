@@ -22,9 +22,17 @@ func ResetConfig() {
 	infoMutex.Unlock()
 }
 
-func MehotdNotAllowed(fn vestigo.MethodNotAllowedHandlerFunc) {
+func MethodNotAllowed(fn vestigo.MethodNotAllowedHandlerFunc) {
 	infoMutex.Lock()
 	vestigo.CustomMethodNotAllowedHandlerFunc(fn)
+	infoMutex.Unlock()
+}
+
+
+// NotFound sets the 404 handler.
+func NotFound(fn http.HandlerFunc) {
+	infoMutex.Lock()
+	vestigo.CustomNotFoundHandlerFunc(fn)
 	infoMutex.Unlock()
 }
 

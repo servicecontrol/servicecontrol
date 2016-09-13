@@ -8,7 +8,7 @@ import (
 
 func Load() {
 	router.MethodNotAllowed(Error405)
-	router.NotFound(Error404)
+//	router.NotFound(Error404)
 }
 
 // Error404 - Page Not Found.
@@ -20,7 +20,7 @@ func Error404(w http.ResponseWriter, r *http.Request) {
 	v.Render(w, r)
 }
 
-func Error405(w http.ResponseWriter, r *http.Request) {
+func Error405(allowedMethods string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		v := view.New("status/index")
