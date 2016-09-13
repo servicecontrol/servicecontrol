@@ -1,14 +1,18 @@
+// Package status provides all the error pages like 404, 405, 500, 501,
+// and the page when a CSRF token is invalid.
 package status
 
 import (
 	"net/http"
+
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/view"
 )
 
+// Load the routes.
 func Load() {
 	router.MethodNotAllowed(Error405)
-//	router.NotFound(Error404)
+	router.NotFound(Error404)
 }
 
 // Error404 - Page Not Found.
@@ -20,6 +24,7 @@ func Error404(w http.ResponseWriter, r *http.Request) {
 	v.Render(w, r)
 }
 
+// Error405 - Method Not Allowed.
 func Error405(allowedMethods string) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)

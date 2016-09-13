@@ -28,7 +28,6 @@ func MethodNotAllowed(fn vestigo.MethodNotAllowedHandlerFunc) {
 	infoMutex.Unlock()
 }
 
-
 // NotFound sets the 404 handler.
 func NotFound(fn http.HandlerFunc) {
 	infoMutex.Lock()

@@ -1,4 +1,4 @@
-package dashboard
+package usage
 
 import (
 	"net/http"
@@ -9,14 +9,14 @@ import (
 )
 
 func Load() {
-	router.Get("/", Index)
+	router.Get("/usage", Index)
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	session := session.Instance(r)
 
-	v := view.New("dashboard/index")
-	v.Vars["int_name"] = "dashboard"
+	v := view.New("usage/index")
+	v.Vars["int_name"] = "usage"
 	v.Vars["menu_items"] = menu.Config().MenuItems
 
 	if session.Values["id"] != nil {

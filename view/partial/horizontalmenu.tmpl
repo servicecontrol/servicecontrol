@@ -2,30 +2,22 @@
 <!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
 <div class="hor-menu  ">
     <ul class="nav navbar-nav">
+
+{{ $intName := .int_name }}
+{{ range  $item := .menu_items }}
+  {{ if eq $intName $item.InternalName }}
         <li class="menu-dropdown active">
-            <a href="/"> Dashboard
+            <a href="{{ $item.Route }}"> {{ $item.PublicName }}
                 <span class="arrow"></span>
             </a>
         </li>
+  {{ else }}
         <li class="menu-dropdown">
-            <a href="/services"> Microservices
+            <a href="{{ $item.Route  }}"> {{ $item.PublicName }}
                 <span class="arrow"></span>
             </a>
         </li>
-        <li class="menu-dropdown">
-            <a href="/capabilities"> Capabilities
-                <span class="arrow"></span>
-            </a>
-        </li>
-        <li class="menu-dropdown">
-            <a href="/usage"> Usage
-                <span class="arrow"></span>
-            </a>
-        </li>
-	<li class="menu-dropdown">
-	    <a href="/support"> Support
-                <span class="arrow"></span>
-            </a>
-	</li>
+  {{ end }}
+{{ end }}
     </ul>
 </div>

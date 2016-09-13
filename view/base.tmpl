@@ -75,7 +75,7 @@
                                 </form>
                                 <!-- END HEADER SEARCH BOX -->
                                 <!-- BEGIN MEGA MENU -->
-                                {{template "horizontalmenu.tmpl"}}
+                                {{template "horizontalmenu.tmpl" .}}
                                 <!-- END MEGA MENU -->
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                         <div class="page-content-wrapper">
                             <!-- BEGIN CONTENT BODY -->
                             <!-- BEGIN PAGE HEAD-->
-                            {{template "blank_page_template.tmpl"}}
+                            {{template "content" .}}
                             <!-- END PAGE CONTENT BODY -->
                             <!-- END CONTENT BODY -->
                         </div>
