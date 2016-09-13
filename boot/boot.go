@@ -11,13 +11,14 @@ import (
 	"servicecontrol.io/servicecontrol/lib/server"
 	"servicecontrol.io/servicecontrol/lib/session"
 	"servicecontrol.io/servicecontrol/lib/view"
+	"servicecontrol.io/servicecontrol/lib/asset"
 
 	"servicecontrol.io/servicecontrol/controller"
 )
 
 // Info contains the application settings.
 type Info struct {
-	//	Asset      asset.Info    `json:"Asset"`
+		Asset      asset.Info    `json:"Asset"`
 	//	Email      email.Info    `json:"Email"`
 	//	Form       form.Info     `json:"Form"`
 	//	Generation generate.Info `json:"Generation"`
