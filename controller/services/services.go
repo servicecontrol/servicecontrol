@@ -2,7 +2,6 @@ package services
 
 import (
 	"net/http"
-	"fmt"
 	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/session"
