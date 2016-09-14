@@ -15,7 +15,8 @@ import (
 	"servicecontrol.io/servicecontrol/lib/server"
 	"servicecontrol.io/servicecontrol/lib/session"
 	"servicecontrol.io/servicecontrol/lib/view"
-	"servicecontrol.io/servicecontrol/viewmodify"
+	"servicecontrol.io/servicecontrol/viewmodify/pageinfo"
+	"servicecontrol.io/servicecontrol/viewmodify/uri"
 
 	"servicecontrol.io/servicecontrol/controller"
 )
@@ -77,7 +78,7 @@ func RegisterServices(config *AppConfig) {
 
 	// Configure form handling
 	//form.SetConfig(config.Form)
-
+	menu.SetConfig(config.Menu)
 	// Load the controller routes
 	controller.LoadRoutes()
 
@@ -100,10 +101,10 @@ func RegisterServices(config *AppConfig) {
 	// Set up the variables and modifiers for the views
 	view.SetModifiers(
 		// authlevel.Modify,
-		// uri.Modify,
+		uri.Modify,
 		// xsrf.Token,
 		// flash.Modify,
-		viewmodify.ExtractPageInfo,
+		pageinfo.Modify,
 	)
 }
 
