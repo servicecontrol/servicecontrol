@@ -10,6 +10,8 @@ import (
 	"github.com/gorilla/context"
 
 	"servicecontrol.io/servicecontrol/lib/asset"
+	"servicecontrol.io/servicecontrol/lib/email_smtp/smtp"
+	"servicecontrol.io/servicecontrol/lib/form"
 	"servicecontrol.io/servicecontrol/lib/jsonconfig"
 	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
@@ -26,8 +28,8 @@ import (
 // AppConfig contains the application settings.
 type AppConfig struct {
 	Asset asset.Info `json:"Asset"`
-	//	Email      email.Info    `json:"Email"`
-	//	Form       form.Info     `json:"Form"`
+	Email smtp.Info  `json:"Email"`
+	Form  form.Info  `json:"Form"`
 	//	Generation generate.Info `json:"Generation"`
 	Postgresql postgresql.Info `json:"Postgresql"`
 	Server     server.Info     `json:"Server"`
@@ -81,7 +83,10 @@ func RegisterServices(config *AppConfig) {
 	}
 
 	// Configure form handling
-	//form.SetConfig(config.Form)
+	form.SetConfig(config.Form)
+
+	// Configure emailing via SMTP
+	smtp.SetConfig(config.Email)
 
 	// Set up the menu
 	menu.SetConfig(config.Menu)

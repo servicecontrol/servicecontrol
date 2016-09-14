@@ -1,7 +1,6 @@
 package uri
 
 import (
-	"fmt"
 	"net/http"
 	"path"
 
@@ -15,5 +14,4 @@ func Modify(w http.ResponseWriter, r *http.Request, v *view.Info) {
 	v.Vars["CurrentURI"] = r.URL.Path
 	v.Vars["ParentURI"] = path.Dir(r.URL.Path)
 	v.Vars["GrandparentURI"] = path.Dir(path.Dir(r.URL.Path))
-	fmt.Println(v)
 }
