@@ -2,22 +2,30 @@ package usage
 
 import (
 	"net/http"
+
 	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/session"
 	"servicecontrol.io/servicecontrol/lib/view"
 )
 
+const (
+	uri          string = "/usage"
+	viewTemplate string = "usage/index"
+	intName      string = "usage"
+)
+
+// Load loads all routes for usage
 func Load() {
-	router.Get("/usage", Index)
+	router.Get(uri, Index)
 }
 
+// Index handles all GET requests
 func Index(w http.ResponseWriter, r *http.Request) {
 	session := session.Instance(r)
 
-	v := view.New("usage/index")
-	v.Vars["int_name"] = "usage"
-	v.Vars["menu_items"] = menu.Config().MenuItems
+	v := view.New(viewTemplate)
+	v.Vars["int_name"] = intName
 
 	view.ExtractPageInfo(v.Vars, menu.Config())
 
