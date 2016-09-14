@@ -1,6 +1,7 @@
 package boot
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -8,7 +9,9 @@ import (
 	"runtime"
 
 	"github.com/gorilla/context"
+	"github.com/gorilla/csrf"
 
+	"servicecontrol.io/servicecontrol/controller/status"
 	"servicecontrol.io/servicecontrol/lib/asset"
 	"servicecontrol.io/servicecontrol/lib/email_smtp/smtp"
 	"servicecontrol.io/servicecontrol/lib/form"
@@ -19,6 +22,8 @@ import (
 	"servicecontrol.io/servicecontrol/lib/session"
 	"servicecontrol.io/servicecontrol/lib/storage/postgresql"
 	"servicecontrol.io/servicecontrol/lib/view"
+	"servicecontrol.io/servicecontrol/lib/xsrf"
+	"servicecontrol.io/servicecontrol/viewmodify/authlevel"
 	"servicecontrol.io/servicecontrol/viewmodify/pageinfo"
 	"servicecontrol.io/servicecontrol/viewmodify/uri"
 
@@ -112,9 +117,9 @@ func RegisterServices(config *AppConfig) {
 
 	// Set up the variables and modifiers for the views
 	view.SetModifiers(
-		// authlevel.Modify,
+		authlevel.Modify,
 		uri.Modify,
-		// xsrf.Token,
+		xsrf.Token,
 		// flash.Modify,
 		pageinfo.Modify,
 	)
@@ -131,19 +136,19 @@ func SetUpMiddleware(h http.Handler) http.Handler {
 	)
 }
 
-// setUpCSRF sets up the CSRF protection
-// func setUpCSRF(h http.Handler) http.Handler {
-// 	// Decode the string
-// 	key, err := base64.StdEncoding.DecodeString(xsrf.Config().AuthKey)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-//
-// 	// Configure the middleware
-// 	cs := csrf.Protect([]byte(key),
-// 		csrf.ErrorHandler(http.HandlerFunc(status.InvalidToken)),
-// 		csrf.FieldName("_token"),
-// 		csrf.Secure(xsrf.Config().Secure),
-// 	)(h)
-// 	return cs
-// }
+//setUpCSRF sets up the CSRF protection
+func setUpCSRF(h http.Handler) http.Handler {
+	// Decode the string
+	key, err := base64.StdEncoding.DecodeString(xsrf.Config().AuthKey)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Configure the middleware
+	cs := csrf.Protect([]byte(key),
+		csrf.ErrorHandler(http.HandlerFunc(status.InvalidToken)),
+		csrf.FieldName("_token"),
+		csrf.Secure(xsrf.Config().Secure),
+	)(h)
+	return cs
+}
