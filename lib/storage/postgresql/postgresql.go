@@ -3,6 +3,7 @@ package postgresql
 
 import (
 	"crypto/tls"
+	"fmt"
 	"sync"
 	"time"
 
@@ -14,8 +15,9 @@ import (
 // *****************************************************************************
 
 var (
-	info      Info
-	infoMutex sync.RWMutex
+	info       Info
+	infoMutex  sync.RWMutex
+	dbInstance pg.DB
 )
 
 // Info holds the details for the Postgresql connection.
@@ -23,7 +25,7 @@ type Info struct {
 	Network string
 	// TCP host:port or Unix socket depending on Network.
 	Addr     string
-	User     string
+	Username string
 	Password string
 	Database string
 
@@ -92,15 +94,38 @@ func ResetConfig() {
 
 // Connect to the database.
 func Connect() (db *pg.DB) {
-	db = pg.Connect(&pg.Options{
-		User:     info.User,
+	dbi := pg.Connect(&pg.Options{
+		User:     info.Username,
 		Database: info.Database,
 	})
+	err := createSchema(dbi)
+	if err != nil {
+		fmt.Println(err)
+	}
+	dbInstance = *dbi
+	return dbi
+}
 
-	return db
+//Instance returns the DB instance
+func Instance() (db *pg.DB) {
+	return &dbInstance
 }
 
 // Disconnect the database connection.
 func Disconnect(db *pg.DB) error {
 	return db.Close()
+}
+
+func createSchema(db *pg.DB) error {
+	queries := []string{
+		`CREATE TEMP TABLE projects (id serial, name text, description text, created timestamp)`,
+	}
+	for _, q := range queries {
+		_, err := db.Exec(q)
+
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

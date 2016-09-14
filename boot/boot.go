@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"runtime"
+	"time"
 
 	"github.com/gorilla/context"
 	"github.com/gorilla/csrf"
@@ -25,6 +26,7 @@ import (
 	"servicecontrol.io/servicecontrol/lib/xsrf"
 	"servicecontrol.io/servicecontrol/middleware/logrequest"
 	"servicecontrol.io/servicecontrol/middleware/rest"
+	"servicecontrol.io/servicecontrol/model/project"
 	"servicecontrol.io/servicecontrol/viewmodify/authlevel"
 	"servicecontrol.io/servicecontrol/viewmodify/pageinfo"
 	"servicecontrol.io/servicecontrol/viewmodify/uri"
@@ -78,16 +80,29 @@ func RegisterServices(config *AppConfig) {
 	session.SetConfig(config.Session)
 
 	// Set up CSRF protection
-	// xsrf.SetConfig(xsrf.Info{
-	// 	AuthKey: config.Session.CSRFKey,
-	// 	Secure:  config.Session.Options.Secure,
-	// })
+	xsrf.SetConfig(xsrf.Info{
+		AuthKey: config.Session.CSRFKey,
+		Secure:  config.Session.Options.Secure,
+	})
 
 	// Connect to database
 	postgresql.SetConfig(config.Postgresql)
-	if err := postgresql.Connect(); err == nil {
+	if db := postgresql.Connect(); db == nil {
 		fmt.Println("Connection to database could not be established.")
 	}
+
+	project.CreateProject(&project.Project{
+		Name:        "Test 3",
+		Description: "asdasdasdasd",
+		Created:     time.Now(),
+	})
+
+	var projects []project.Project
+	err := postgresql.Instance().Model(&projects).Select()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(projects)
 
 	// Configure form handling
 	form.SetConfig(config.Form)

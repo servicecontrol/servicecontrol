@@ -1,4 +1,4 @@
-package projects
+package project
 
 import (
 	"fmt"
@@ -9,6 +9,7 @@ import (
 
 // Project represents a project
 type Project struct {
+	TableName   struct{} `sql:"projects,alias:project"`
 	ID          int64
 	Name        string
 	Description string
@@ -17,10 +18,10 @@ type Project struct {
 
 // String returns projects in readable format
 func (p Project) String() string {
-	return fmt.Sprintf("User<%d %s %s %v", p.ID, p.Name, p.Description, p.Created)
+	return fmt.Sprintf("Project<%d %s %s %v>", p.ID, p.Name, p.Description, p.Created)
 }
 
 // CreateProject creates a project
-func CreateProject(p Project) error {
+func CreateProject(p *Project) error {
 	return db.Instance().Create(p)
 }

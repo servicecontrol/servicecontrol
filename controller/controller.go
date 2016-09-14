@@ -7,6 +7,7 @@ import (
 	"servicecontrol.io/servicecontrol/controller/dashboard"
 	"servicecontrol.io/servicecontrol/controller/login"
 	"servicecontrol.io/servicecontrol/controller/logout"
+	"servicecontrol.io/servicecontrol/controller/management"
 	"servicecontrol.io/servicecontrol/controller/register"
 	"servicecontrol.io/servicecontrol/controller/services"
 	"servicecontrol.io/servicecontrol/controller/static"
@@ -29,4 +30,5 @@ func LoadRoutes() {
 	billing.Load()
 	register.Load()
 	status.Load()
+	management.Load()
 }
