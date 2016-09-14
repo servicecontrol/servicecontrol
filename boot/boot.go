@@ -17,8 +17,8 @@ import (
 	"servicecontrol.io/servicecontrol/controller"
 )
 
-// Info contains the application settings.
-type Info struct {
+// AppConfig contains the application settings.
+type AppConfig struct {
 	Asset asset.Info `json:"Asset"`
 	//	Email      email.Info    `json:"Email"`
 	//	Form       form.Info     `json:"Form"`
@@ -32,7 +32,8 @@ type Info struct {
 	Path     string
 }
 
-func (c *Info) ParseJSON(b []byte) error {
+// ParseJSON parses JSON into a Config struct
+func (c *AppConfig) ParseJSON(b []byte) error {
 	return json.Unmarshal(b, &c)
 }
 
@@ -41,14 +42,16 @@ func init() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
-func LoadConfig(configFile string) *Info {
-	config := &Info{}
+// LoadConfig loads all app config from a file
+func LoadConfig(configFile string) *AppConfig {
+	config := &AppConfig{}
 	jsonconfig.LoadOrFatal(configFile, config)
 	config.Path = configFile
 	return config
 }
 
-func RegisterServices(config *Info) {
+// RegisterServices passes app config to the according service(lib)
+func RegisterServices(config *AppConfig) {
 	session.SetConfig(config.Session)
 	menu.SetConfig(config.Menu)
 	controller.LoadRoutes()
