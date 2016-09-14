@@ -59,14 +59,14 @@ func Error404(w http.ResponseWriter, r *http.Request) {
 // 	v.Vars["message"] = "Page is not yet implemented."
 // 	v.Render(w, r)
 // }
-//
-// // InvalidToken shows a page in response to CSRF attacks.
-// func InvalidToken(w http.ResponseWriter, r *http.Request) {
-// 	w.WriteHeader(http.StatusForbidden)
-// 	v := view.New("status/index")
-// 	v.Vars["title"] = "Invalid Token"
-// 	v.Vars["message"] = `Your token <strong>expired</strong>,
-// 		click <a href="javascript:void(0)" onclick="location.replace(document.referrer)">here</a>
-// 		to try again.`
-// 	v.Render(w, r)
-// }
+
+// InvalidToken shows a page in response to CSRF attacks.
+func InvalidToken(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusForbidden)
+	v := view.New("status/index")
+	v.Vars["title"] = "Invalid Token"
+	v.Vars["message"] = `Your token <strong>expired</strong>,
+		click <a href="javascript:void(0)" onclick="location.replace(document.referrer)">here</a>
+		to try again.`
+	v.Render(w, r)
+}
