@@ -1,8 +1,8 @@
 package services
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/session"
@@ -23,9 +23,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	v := view.New("services/index")
 	v.Vars["int_name"] = "services"
 	v.Vars["menu_items"] = menu.Config().MenuItems
-	
-	view.ExtractPageInfo(v.Vars, menu.Config())	
-fmt.Println(v)
+
+	view.ExtractPageInfo(v.Vars, menu.Config())
+	fmt.Println(v)
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]
 	}
