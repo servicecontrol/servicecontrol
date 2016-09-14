@@ -23,6 +23,8 @@ import (
 	"servicecontrol.io/servicecontrol/lib/storage/postgresql"
 	"servicecontrol.io/servicecontrol/lib/view"
 	"servicecontrol.io/servicecontrol/lib/xsrf"
+	"servicecontrol.io/servicecontrol/middleware/logrequest"
+	"servicecontrol.io/servicecontrol/middleware/rest"
 	"servicecontrol.io/servicecontrol/viewmodify/authlevel"
 	"servicecontrol.io/servicecontrol/viewmodify/pageinfo"
 	"servicecontrol.io/servicecontrol/viewmodify/uri"
@@ -109,10 +111,10 @@ func RegisterServices(config *AppConfig) {
 	// Set up the functions for the views
 	view.SetFuncMaps(
 		asset.Map(config.View.BaseURI),
-	//	link.Map(config.View.BaseURI),
-	// noescape.Map(),
-	// prettytime.Map(),
-	// form.Map(),
+		// link.Map(config.View.BaseURI),
+		// noescape.Map(),
+		//prettytime.Map(),
+		form.Map(),
 	)
 
 	// Set up the variables and modifiers for the views
@@ -128,10 +130,10 @@ func RegisterServices(config *AppConfig) {
 // SetUpMiddleware contains the middleware that applies to every request.
 func SetUpMiddleware(h http.Handler) http.Handler {
 	return router.ChainHandler( // Chain middleware, top middlware runs first
-		h, // Handler to wrap
-		//	setUpCSRF, // Prevent CSRF
-		// rest.Handler,         // Support changing HTTP method sent via query string
-		// logrequest.Handler,   // Log every request
+		h,                    // Handler to wrap
+		setUpCSRF,            // Prevent CSRF
+		rest.Handler,         // Support changing HTTP method sent via query string
+		logrequest.Handler,   // Log every request
 		context.ClearHandler, // Prevent memory leak with gorilla.sessions
 	)
 }
