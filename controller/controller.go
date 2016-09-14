@@ -10,6 +10,7 @@ import (
 	"servicecontrol.io/servicecontrol/controller/register"
 	"servicecontrol.io/servicecontrol/controller/services"
 	"servicecontrol.io/servicecontrol/controller/static"
+	"servicecontrol.io/servicecontrol/controller/status"
 	"servicecontrol.io/servicecontrol/controller/support"
 	"servicecontrol.io/servicecontrol/controller/usage"
 )
@@ -27,4 +28,5 @@ func LoadRoutes() {
 	account.Load()
 	billing.Load()
 	register.Load()
+	status.Load()
 }
