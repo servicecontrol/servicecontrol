@@ -102,7 +102,7 @@ func RegisterServices(config *AppConfig) {
 		// uri.Modify,
 		// xsrf.Token,
 		// flash.Modify,
-		view.ExtractPageInfo,
+		viewmodify.ExtractPageInfo,
 	)
 }
 
