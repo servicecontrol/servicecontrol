@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	"net/http"
+
 	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/session"
@@ -13,6 +14,7 @@ const (
 	uri string = "/services"
 )
 
+// Load configures all routers for services
 func Load() {
 	router.Get(uri, Index)
 }

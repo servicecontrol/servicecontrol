@@ -14,6 +14,7 @@ import (
 	"servicecontrol.io/servicecontrol/controller/usage"
 )
 
+// LoadRoutes loads all routes for all controllers
 func LoadRoutes() {
 	dashboard.Load()
 	static.Load()
