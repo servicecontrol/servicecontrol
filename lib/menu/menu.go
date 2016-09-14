@@ -14,6 +14,7 @@ type MenuItem struct {
 	InternalName string `json:"internalName"`
 	PublicName   string `json:"publicName"`
 	Route        string `json:"route"`
+	Description        string `json:"description"`
 	IsVisibleInMain bool `json:"isVisibleInMain"`
 }
 
