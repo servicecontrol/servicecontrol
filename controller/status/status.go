@@ -30,8 +30,6 @@ func Error404(w http.ResponseWriter, r *http.Request) {
 	v := view.New(viewTemplateError404)
 	v.Vars["int_name"] = intNameError404
 
-	view.ExtractPageInfo(v.Vars, menu.Config())
-
 	v.Render(w, r)
 }
 

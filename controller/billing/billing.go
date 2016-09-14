@@ -27,8 +27,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	v := view.New(viewTemplate)
 	v.Vars["int_name"] = intName
 
-	view.ExtractPageInfo(v.Vars, menu.Config())
-
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]
 	}

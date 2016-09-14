@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"runtime"
 
+	"github.com/gorilla/context"
+
 	"servicecontrol.io/servicecontrol/lib/asset"
 	"servicecontrol.io/servicecontrol/lib/jsonconfig"
 	"servicecontrol.io/servicecontrol/lib/menu"
@@ -37,8 +39,12 @@ func (c *AppConfig) ParseJSON(b []byte) error {
 	return json.Unmarshal(b, &c)
 }
 
+// init sets runtime settings.
 func init() {
+	// Verbose logging with file name and line number
 	log.SetFlags(log.Lshortfile)
+
+	// Use all CPU cores
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
@@ -46,22 +52,57 @@ func init() {
 func LoadConfig(configFile string) *AppConfig {
 	config := &AppConfig{}
 	jsonconfig.LoadOrFatal(configFile, config)
+
+	//Store path to config file
 	config.Path = configFile
+
 	return config
 }
 
 // RegisterServices passes app config to the according service(lib)
 func RegisterServices(config *AppConfig) {
+	// Set up the session cookie store
 	session.SetConfig(config.Session)
-	menu.SetConfig(config.Menu)
+
+	// Set up CSRF protection
+	// xsrf.SetConfig(xsrf.Info{
+	// 	AuthKey: config.Session.CSRFKey,
+	// 	Secure:  config.Session.Options.Secure,
+	// })
+
+	// Connect to database
+	// mysql.SetConfig(config.MySQL)
+	// mysql.Connect(true)
+
+	// Configure form handling
+	//form.SetConfig(config.Form)
+
+	// Load the controller routes
 	controller.LoadRoutes()
+
+	// Set up the assets
 	asset.SetConfig(config.Asset)
+
+	// Set up the views
 	view.SetConfig(config.View)
 	view.SetTemplates(config.Template.Root, config.Template.Children)
 
 	// Set up the functions for the views
 	view.SetFuncMaps(
 		asset.Map(config.View.BaseURI),
+	//	link.Map(config.View.BaseURI),
+	// noescape.Map(),
+	// prettytime.Map(),
+	// form.Map(),
+	)
+
+	// Set up the variables and modifiers for the views
+	view.SetModifiers(
+		// authlevel.Modify,
+		// uri.Modify,
+		// xsrf.Token,
+		// flash.Modify,
+		view.ExtractPageInfo,
 	)
 }
 
@@ -69,5 +110,26 @@ func RegisterServices(config *AppConfig) {
 func SetUpMiddleware(h http.Handler) http.Handler {
 	return router.ChainHandler( // Chain middleware, top middlware runs first
 		h, // Handler to wrap
+		//	setUpCSRF, // Prevent CSRF
+		// rest.Handler,         // Support changing HTTP method sent via query string
+		// logrequest.Handler,   // Log every request
+		context.ClearHandler, // Prevent memory leak with gorilla.sessions
 	)
 }
+
+// setUpCSRF sets up the CSRF protection
+// func setUpCSRF(h http.Handler) http.Handler {
+// 	// Decode the string
+// 	key, err := base64.StdEncoding.DecodeString(xsrf.Config().AuthKey)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+//
+// 	// Configure the middleware
+// 	cs := csrf.Protect([]byte(key),
+// 		csrf.ErrorHandler(http.HandlerFunc(status.InvalidToken)),
+// 		csrf.FieldName("_token"),
+// 		csrf.Secure(xsrf.Config().Secure),
+// 	)(h)
+// 	return cs
+// }
