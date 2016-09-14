@@ -1,6 +1,7 @@
 package boot
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -8,8 +9,12 @@ import (
 	"runtime"
 
 	"github.com/gorilla/context"
+	"github.com/gorilla/csrf"
 
+	"servicecontrol.io/servicecontrol/controller/status"
 	"servicecontrol.io/servicecontrol/lib/asset"
+	"servicecontrol.io/servicecontrol/lib/email_smtp/smtp"
+	"servicecontrol.io/servicecontrol/lib/form"
 	"servicecontrol.io/servicecontrol/lib/jsonconfig"
 	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
@@ -17,6 +22,10 @@ import (
 	"servicecontrol.io/servicecontrol/lib/session"
 	"servicecontrol.io/servicecontrol/lib/storage/postgresql"
 	"servicecontrol.io/servicecontrol/lib/view"
+	"servicecontrol.io/servicecontrol/lib/xsrf"
+	"servicecontrol.io/servicecontrol/middleware/logrequest"
+	"servicecontrol.io/servicecontrol/middleware/rest"
+	"servicecontrol.io/servicecontrol/viewmodify/authlevel"
 	"servicecontrol.io/servicecontrol/viewmodify/pageinfo"
 	"servicecontrol.io/servicecontrol/viewmodify/uri"
 
@@ -26,8 +35,8 @@ import (
 // AppConfig contains the application settings.
 type AppConfig struct {
 	Asset asset.Info `json:"Asset"`
-	//	Email      email.Info    `json:"Email"`
-	//	Form       form.Info     `json:"Form"`
+	Email smtp.Info  `json:"Email"`
+	Form  form.Info  `json:"Form"`
 	//	Generation generate.Info `json:"Generation"`
 	Postgresql postgresql.Info `json:"Postgresql"`
 	Server     server.Info     `json:"Server"`
@@ -81,7 +90,10 @@ func RegisterServices(config *AppConfig) {
 	}
 
 	// Configure form handling
-	//form.SetConfig(config.Form)
+	form.SetConfig(config.Form)
+
+	// Configure emailing via SMTP
+	smtp.SetConfig(config.Email)
 
 	// Set up the menu
 	menu.SetConfig(config.Menu)
@@ -99,17 +111,17 @@ func RegisterServices(config *AppConfig) {
 	// Set up the functions for the views
 	view.SetFuncMaps(
 		asset.Map(config.View.BaseURI),
-	//	link.Map(config.View.BaseURI),
-	// noescape.Map(),
-	// prettytime.Map(),
-	// form.Map(),
+		// link.Map(config.View.BaseURI),
+		// noescape.Map(),
+		//prettytime.Map(),
+		form.Map(),
 	)
 
 	// Set up the variables and modifiers for the views
 	view.SetModifiers(
-		// authlevel.Modify,
+		authlevel.Modify,
 		uri.Modify,
-		// xsrf.Token,
+		xsrf.Token,
 		// flash.Modify,
 		pageinfo.Modify,
 	)
@@ -118,27 +130,27 @@ func RegisterServices(config *AppConfig) {
 // SetUpMiddleware contains the middleware that applies to every request.
 func SetUpMiddleware(h http.Handler) http.Handler {
 	return router.ChainHandler( // Chain middleware, top middlware runs first
-		h, // Handler to wrap
-		//	setUpCSRF, // Prevent CSRF
-		// rest.Handler,         // Support changing HTTP method sent via query string
-		// logrequest.Handler,   // Log every request
+		h,                    // Handler to wrap
+		setUpCSRF,            // Prevent CSRF
+		rest.Handler,         // Support changing HTTP method sent via query string
+		logrequest.Handler,   // Log every request
 		context.ClearHandler, // Prevent memory leak with gorilla.sessions
 	)
 }
 
-// setUpCSRF sets up the CSRF protection
-// func setUpCSRF(h http.Handler) http.Handler {
-// 	// Decode the string
-// 	key, err := base64.StdEncoding.DecodeString(xsrf.Config().AuthKey)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-//
-// 	// Configure the middleware
-// 	cs := csrf.Protect([]byte(key),
-// 		csrf.ErrorHandler(http.HandlerFunc(status.InvalidToken)),
-// 		csrf.FieldName("_token"),
-// 		csrf.Secure(xsrf.Config().Secure),
-// 	)(h)
-// 	return cs
-// }
+//setUpCSRF sets up the CSRF protection
+func setUpCSRF(h http.Handler) http.Handler {
+	// Decode the string
+	key, err := base64.StdEncoding.DecodeString(xsrf.Config().AuthKey)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Configure the middleware
+	cs := csrf.Protect([]byte(key),
+		csrf.ErrorHandler(http.HandlerFunc(status.InvalidToken)),
+		csrf.FieldName("_token"),
+		csrf.Secure(xsrf.Config().Secure),
+	)(h)
+	return cs
+}
