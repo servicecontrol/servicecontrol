@@ -3,9 +3,10 @@
 <div class="hor-menu  ">
     <ul class="nav navbar-nav">
 
-{{ $intName := .int_name }}
+{{ $currentURI := .CurrentURI }}
 {{ range  $item := .menu_items }}
-  {{ if eq $intName $item.InternalName }}
+  {{ if $item.IsVisibleInMain }}
+  {{ if eq $currentURI $item.Route }}
         <li class="menu-dropdown active">
             <a href="{{ $item.Route }}"> {{ $item.PublicName }}
                 <span class="arrow"></span>
@@ -17,6 +18,7 @@
                 <span class="arrow"></span>
             </a>
         </li>
+  {{ end }}
   {{ end }}
 {{ end }}
     </ul>

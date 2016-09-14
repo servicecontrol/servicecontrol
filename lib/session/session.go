@@ -2,18 +2,30 @@ package session
 
 import (
 	"encoding/base64"
-	"github.com/gorilla/sessions"
 	"log"
 	"net/http"
 	"sync"
+
+	"github.com/gorilla/sessions"
 )
 
 var (
-	store     *sessions.CookieStore
+	store *sessions.CookieStore
+	// Name holds the name of the session store
 	Name      string
 	infoMutex sync.RWMutex
 )
 
+// Info holds the session level information.
+type Info struct {
+	Options    sessions.Options `json:"Options"`    // Pulled from: http://www.gorillatoolkit.org/pkg/sessions#Options
+	Name       string           `json:"Name"`       // Name for: http://www.gorillatoolkit.org/pkg/sessions#CookieStore.Get
+	AuthKey    string           `json:"AuthKey"`    // Key for: http://www.gorillatoolkit.org/pkg/sessions#NewCookieStore
+	EncryptKey string           `json:"EncryptKey"` // Key for: http://www.gorillatoolkit.org/pkg/sessions#NewCookieStore
+	CSRFKey    string           `json:"CSRFKey"`    // Key for: http://www.gorillatoolkit.org/pkg/csrf#Protect
+}
+
+// Instance returns a session instance.
 func Instance(r *http.Request) *sessions.Session {
 	infoMutex.RLock()
 	session, _ := store.Get(r, Name)
@@ -45,13 +57,4 @@ func SetConfig(i Info) {
 	store.Options = &i.Options
 	Name = i.Name
 	infoMutex.Unlock()
-}
-
-// Info holds the session level information.
-type Info struct {
-	Options    sessions.Options `json:"Options"`    // Pulled from: http://www.gorillatoolkit.org/pkg/sessions#Options
-	Name       string           `json:"Name"`       // Name for: http://www.gorillatoolkit.org/pkg/sessions#CookieStore.Get
-	AuthKey    string           `json:"AuthKey"`    // Key for: http://www.gorillatoolkit.org/pkg/sessions#NewCookieStore
-	EncryptKey string           `json:"EncryptKey"` // Key for: http://www.gorillatoolkit.org/pkg/sessions#NewCookieStore
-	CSRFKey    string           `json:"CSRFKey"`    // Key for: http://www.gorillatoolkit.org/pkg/csrf#Protect
 }
