@@ -15,6 +15,7 @@ import (
 	"servicecontrol.io/servicecontrol/lib/server"
 	"servicecontrol.io/servicecontrol/lib/session"
 	"servicecontrol.io/servicecontrol/lib/view"
+	"servicecontrol.io/servicecontrol/viewmodify"
 
 	"servicecontrol.io/servicecontrol/controller"
 )

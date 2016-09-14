@@ -5,7 +5,6 @@ package status
 import (
 	"net/http"
 
-	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/view"
 )

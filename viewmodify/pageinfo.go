@@ -1,4 +1,4 @@
-package pageinfo
+package viewmodify
 
 import (
 	"net/http"
