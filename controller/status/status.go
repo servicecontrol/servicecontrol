@@ -5,8 +5,14 @@ package status
 import (
 	"net/http"
 
+	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/view"
+)
+
+const (
+	viewTemplateError404 string = "error404/index"
+	intNameError404      string = "error404"
 )
 
 // Load the routes.
@@ -18,9 +24,11 @@ func Load() {
 // Error404 - Page Not Found.
 func Error404(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
-	v := view.New("status/index")
-	v.Vars["title"] = "404 Not Found"
-	v.Vars["message"] = "Page could not be found."
+	v := view.New(viewTemplateError404)
+	v.Vars["int_name"] = intNameError404
+
+	view.ExtractPageInfo(v.Vars, menu.Config())
+
 	v.Render(w, r)
 }
 
