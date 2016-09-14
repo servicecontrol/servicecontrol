@@ -2,6 +2,7 @@ package boot
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"runtime"
@@ -14,6 +15,7 @@ import (
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/server"
 	"servicecontrol.io/servicecontrol/lib/session"
+	"servicecontrol.io/servicecontrol/lib/storage/postgresql"
 	"servicecontrol.io/servicecontrol/lib/view"
 	"servicecontrol.io/servicecontrol/viewmodify/pageinfo"
 	"servicecontrol.io/servicecontrol/viewmodify/uri"
@@ -27,13 +29,13 @@ type AppConfig struct {
 	//	Email      email.Info    `json:"Email"`
 	//	Form       form.Info     `json:"Form"`
 	//	Generation generate.Info `json:"Generation"`
-	//	MySQL      mysql.Info    `json:"MySQL"`
-	Server   server.Info   `json:"Server"`
-	Session  session.Info  `json:"Session"`
-	Template view.Template `json:"Template"`
-	View     view.Info     `json:"View"`
-	Menu     menu.Menu     `json:"Menu"`
-	Path     string
+	Postgresql postgresql.Info `json:"Postgresql"`
+	Server     server.Info     `json:"Server"`
+	Session    session.Info    `json:"Session"`
+	Template   view.Template   `json:"Template"`
+	View       view.Info       `json:"View"`
+	Menu       menu.Menu       `json:"Menu"`
+	Path       string
 }
 
 // ParseJSON parses JSON into a Config struct
@@ -73,12 +75,17 @@ func RegisterServices(config *AppConfig) {
 	// })
 
 	// Connect to database
-	// mysql.SetConfig(config.MySQL)
-	// mysql.Connect(true)
+	postgresql.SetConfig(config.Postgresql)
+	if err := postgresql.Connect(); err == nil {
+		fmt.Println("Connection to database could not be established.")
+	}
 
 	// Configure form handling
 	//form.SetConfig(config.Form)
+
+	// Set up the menu
 	menu.SetConfig(config.Menu)
+
 	// Load the controller routes
 	controller.LoadRoutes()
 
