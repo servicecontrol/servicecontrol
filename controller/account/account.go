@@ -2,22 +2,30 @@ package account
 
 import (
 	"net/http"
+
 	"servicecontrol.io/servicecontrol/lib/menu"
 	"servicecontrol.io/servicecontrol/lib/router"
 	"servicecontrol.io/servicecontrol/lib/session"
 	"servicecontrol.io/servicecontrol/lib/view"
 )
 
+const (
+	uri          string = "/account"
+	viewTemplate string = "account/index"
+	intName      string = "account"
+)
+
+// Load all routes for accounts
 func Load() {
-	router.Get("/account", Index)
+	router.Get(uri, Index)
 }
 
+//Index handles all Get requests
 func Index(w http.ResponseWriter, r *http.Request) {
 	session := session.Instance(r)
 
-	v := view.New("account/index")
-	v.Vars["int_name"] = "account"
-	v.Vars["menu_items"] = menu.Config().MenuItems
+	v := view.New(viewTemplate)
+	v.Vars["int_name"] = intName
 
 	view.ExtractPageInfo(v.Vars, menu.Config())
 
