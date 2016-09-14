@@ -12,6 +12,8 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+
+	"servicecontrol.io/servicecontrol/lib/uuid"
 )
 
 // *****************************************************************************
