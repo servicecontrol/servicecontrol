@@ -11,7 +11,6 @@ import (
 const (
 	uri          string = "/"
 	viewTemplate string = "dashboard/index"
-	intName      string = "dashboard"
 )
 
 // Load loads all router for dashboard
@@ -24,7 +23,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	session := session.Instance(r)
 
 	v := view.New(viewTemplate)
-	v.Vars["int_name"] = intName
 
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]

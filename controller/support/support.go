@@ -11,7 +11,6 @@ import (
 const (
 	uri          string = "/support"
 	viewTemplate string = "support/index"
-	intName      string = "support"
 )
 
 // Load loads all routers for support
@@ -24,7 +23,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	session := session.Instance(r)
 
 	v := view.New(viewTemplate)
-	v.Vars["int_name"] = intName
 
 	if session.Values["id"] != nil {
 		v.Vars["first_name"] = session.Values["first_name"]

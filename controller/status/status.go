@@ -27,7 +27,6 @@ func Load() {
 func Error404(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 	v := view.New(viewTemplateError404)
-	v.Vars["int_name"] = intNameError404
 
 	v.Render(w, r)
 }
