@@ -13,7 +13,7 @@ const (
 	viewTemplate string = "management/index"
 )
 
-// Load configures all routers for services
+// Load configures all routers
 func Load() {
 	router.Get(uri, Index)
 }
