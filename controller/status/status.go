@@ -11,7 +11,6 @@ import (
 
 const (
 	viewTemplateError404 string = "error404/index"
-	intNameError404      string = "error404"
 
 //	viewTemplateError405 string = "error405/index"
 //  intNameError405      string = "error405"
